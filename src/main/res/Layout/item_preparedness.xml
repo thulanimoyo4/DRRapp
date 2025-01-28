@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="@string/icon"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="16dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id[_{{{CITATION{{{_1{](https://github.com/54dxs/54dxs.github.io/tree/2bb719d621e031a270fd713c52d4a0f0102fee6b/html%2Frookie%2Fdoc%2Ffragment%2Ffragment-demo2.md)[_{{{CITATION{{{_2{](https://github.com/no0xd/MyStudy/tree/bc5d4a3e984884a71775b05e8b87f86638e98ebe/Android%2Fandroid-tech-frontier%2Fissue-8%2F%E5%BC%80%E5%A7%8B%E5%AD%A6%E4%B9%A0Material%20Design.md)[_{{{CITATION{{{_3{](https://github.com/alexnevskiy/GermanExam/tree/e8349c489b00c35a9c8739535e2f77b42e914ad0/labs%2Flab4.md)[_{{{CITATION{{{_4{](https://github.com/dagkalis/SelectableRecyclerView/tree/9039a42d5623dba3a50161d8f4bae39b9865726b/README.md)

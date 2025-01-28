@@ -1,0 +1,96 @@
+package com.example.disastermanagementapp
+
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
+import android.os.Bundle
+import android.os.Looper
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.location.*
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
+
+class MainActivity : AppCompatActivity() {
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
+    private val database = FirebaseDatabase.getInstance()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        // Initialize location client
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        // Setup RecyclerView for Preparedness Items
+        preparednessRecyclerView.layoutManager = LinearLayoutManager(this)
+        preparednessRecyclerView.adapter = PreparednessAdapter(preparednessItems)
+
+        // Setup map
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync { googleMap ->
+            // Display Safe Zones
+            safeZones.forEach { location ->
+                googleMap.addMarker(MarkerOptions().position(location).title("Safe Zone"))
+            }
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(safeZones[0], 10f))
+        }
+
+        // Setup location callback
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                for (location in locationResult.locations) {
+                    // Send location to the server
+                    sendLocationToServer(location)
+                }
+            }
+        }
+
+        // Request location updates
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            startLocationUpdates()
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+        }
+
+        // Setup SOS button
+        sosButton.setOnClickListener {
+            val location = getCurrentLocation()
+            sendLocationToServer(location)
+            showSOSConfirmation()
+        }
+    }
+
+    private fun startLocationUpdates() {
+        val locationRequest = LocationRequest.create().apply {
+            interval = 60000 // 1 minute intervals
+            fastestInterval = 30000 // 30 seconds intervals
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+    }
+
+    private fun sendLocationToServer(location: Location) {
+        val userId = "user_id" // Replace with actual user ID
+        val myRef = database.getReference("survivors").child(userId).child("last_known_location")
+        myRef.setValue(location)
+    }
+
+    private fun getCurrentLocation(): Location {
+        // Implement method to get current location
+    }
+
+    private fun showSOSConfirmation() {
+        // Implement method to show SOS confirmation to the user
+    }
+}

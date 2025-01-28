@@ -1,0 +1,22 @@
+package com.example.disastermanagementapp
+
+data class PreparednessItem(val title: String, val description: String, val icon: Int)
+data class AssistanceItem(val title: String, val description: String, val contactInfo: String)
+data class CommunityAlert(val type: String, val location: LatLng, val description: String, val timestamp: Long)
+
+val preparednessItems = listOf(
+    PreparednessItem("Emergency Kit", "List of items to include in your emergency kit.", R.drawable.icon_kit),
+    PreparednessItem("Evacuation Plan", "Steps to create and practice an evacuation plan.", R.drawable.icon_evacuate),
+    PreparednessItem("Communication Strategy", "How to stay in touch with family and neighbors.", R.drawable.icon_communication)
+)
+
+val assistanceItems = listOf(
+    AssistanceItem("Emergency Services", "Contact for immediate assistance.", "123-456-7890"),
+    AssistanceItem("Food and Water", "Locations for food and water distribution.", "Location A, Location B"),
+    AssistanceItem("Medical Aid", "Clinics and hospitals providing medical aid.", "Clinic A, Hospital B")
+)
+
+val safeZones = listOf(
+    LatLng(-17.825165, 31.03351), // Example coordinates for Harare
+    LatLng(-15.416667, 28.283333) // Example coordinates for Lusaka
+)
