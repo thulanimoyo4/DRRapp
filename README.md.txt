@@ -1,0 +1,1 @@
+This app helps manage disaster alerts, preparedness information, safety site locations, and real-time location tracking for survivors.
